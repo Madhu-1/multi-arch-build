@@ -6,6 +6,9 @@ dist: xenial
 services:
   - docker
 
+install:
+  - sudo apt-get install jq
+
 jobs:
   include:
     - name: multi-arch-docker-build
