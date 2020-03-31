@@ -28,8 +28,8 @@ build_push_images() {
     echo $ifs
     echo $digest
     sed -i "s|\(^FROM.*\)${baseimg}.*$|\1${baseimg}@${digest}|" "${dockerfile}"
-    docker build -t multi-arch-test:$ACH .
-    docker push multi-arch-test:${ACH}
+    docker build -t madhupr001/multi-arch-test:$ACH .
+    docker push madhupr001/multi-arch-test:${ACH}
 
 }
 
