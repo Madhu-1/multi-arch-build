@@ -14,10 +14,12 @@ jobs:
     - name: multi-arch-docker-build on arm64
       arch: arm64
       script:
+        - echo $DOCKER_USERNAME
         - ./build.sh arm64
     - name: multi-arch-docker-build on amd64
       arch: amd64
       script:
+        - echo $DOCKER_USERNAME
         - ./build.sh amd64
 
 deploy:
