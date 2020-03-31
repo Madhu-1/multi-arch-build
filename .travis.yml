@@ -24,14 +24,13 @@ jobs:
 
 deploy:
   - provider: script
-    skip_cleanup: true
     arch: arm64
     on: # yamllint disable-line rule:truthy
       all_branches: true
-    script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD  && ./push.sh arm64
+    script: git stash && docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD  && ./push.sh arm64
   - provider: script
     skip_cleanup: true
     arch: amd64
     on: # yamllint disable-line rule:truthy
       all_branches: true
-    script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD  ./push.sh amd64
+    script: git stash && docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD  ./push.sh amd64
