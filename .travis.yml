@@ -1,0 +1,32 @@
+---
+# need for docker build
+sudo: true
+dist: xenial
+
+addons:
+  apt:
+    packages:
+      - realpath
+      - ruby
+services:
+  - docker
+
+language: go
+branches:
+  only:
+    - master
+
+go: 1.13.x
+
+env:
+  global:
+    - GO111MODULE=on
+
+before_install:
+  - mkdir -p $GOPATH/bin
+
+jobs:
+  include:
+    - name: multi-arch-build
+      script:
+        - ./build.sh
