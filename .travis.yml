@@ -11,7 +11,23 @@ install:
 
 jobs:
   include:
-    - name: multi-arch-docker-build
+    - name: multi-arch-docker-build on arm64
       arch: arm64
       script:
-        - ./build.sh
+        - ./build.sh arm64
+    - name: multi-arch-docker-build on amd64
+      arch: amd64
+      script:
+        - ./build.sh amd64
+
+deploy:
+  - provider: script
+    arch: arm64
+    on: # yamllint disable-line rule:truthy
+      all_branches: true
+    script: ./push.sh arm64
+  - provider: script
+    arch: arm64
+    on: # yamllint disable-line rule:truthy
+      all_branches: true
+    script: ./push.sh amd64
