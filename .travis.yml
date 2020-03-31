@@ -21,6 +21,7 @@ jobs:
         - ./build.sh amd64
 
 deploy:
+        #skip_cleanup: true
   - provider: script
     arch: arm64
     on: # yamllint disable-line rule:truthy
