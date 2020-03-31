@@ -20,16 +20,12 @@ build_push_images() {
 	manifests=$("${CONTAINER_CMD:-docker}" manifest inspect "${baseimg}" | jq '.manifests[] | {arch: .platform.architecture, digest: .digest}')
 	echo $manifests
 	# build and push per arch images
-	for ARCH in amd64 arm64; do
-		ifs=$IFS
-		IFS=
-		digest=$(awk -v ARCH=${ARCH} '{if (archfound) {print $NF; exit 0}}; {archfound=($0 ~ "arch.*"ARCH)}' <<<"${manifests}")
-		IFS=$ifs
-		echo $ifs
-		echo $digest
-		sed -i "s|\(^FROM.*\)${baseimg}.*$|\1${baseimg}@${digest}|" "${dockerfile}"
-		GOARCH=${ARCH} docker build .
-	done
+	AR=$1
+	echo $AR
+	digest=$(awk -v ARCH=${AR} '{if (archfound) {print $NF; exit 0}}; {archfound=($0 ~ "arch.*"ARCH)}' <<<"${manifests}")
+	echo "printing digest"$digest
+	sed -i "s|\(^FROM.*\)${baseimg}.*$|\1${baseimg}@${digest}|" "${dockerfile}"
+	GOARCH=${ARCH} docker build .
 }
 
-build_push_images
+build_push_images $1

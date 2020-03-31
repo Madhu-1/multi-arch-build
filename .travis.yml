@@ -3,30 +3,33 @@
 sudo: true
 dist: xenial
 
-addons:
-  apt:
-    packages:
-      - realpath
-      - ruby
 services:
   - docker
 
-language: go
-branches:
-  only:
-    - master
-
-go: 1.13.x
-
-env:
-  global:
-    - GO111MODULE=on
-
-before_install:
-  - mkdir -p $GOPATH/bin
+install:
+  - sudo apt-get install jq
 
 jobs:
   include:
-    - name: multi-arch-build
+    - name: multi-arch-docker-build on arm64
+      arch: arm64
       script:
-        - ./build.sh
+        - ./build.sh arm64
+    - name: multi-arch-docker-build on amd64
+      arch: amd64
+      script:
+        - ./build.sh amd64
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    arch: arm64
+    on: # yamllint disable-line rule:truthy
+      all_branches: true
+    script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD  && ./push.sh arm64
+  - provider: script
+    skip_cleanup: true
+    arch: amd64
+    on: # yamllint disable-line rule:truthy
+      all_branches: true
+    script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD  ./push.sh amd64
