@@ -21,14 +21,15 @@ jobs:
         - ./build.sh amd64
 
 deploy:
-        #skip_cleanup: true
   - provider: script
+    skip_cleanup: true
     arch: arm64
     on: # yamllint disable-line rule:truthy
       all_branches: true
     script: ./push.sh arm64
   - provider: script
-    arch: arm64
+    skip_cleanup: true
+    arch: amd64
     on: # yamllint disable-line rule:truthy
       all_branches: true
     script: ./push.sh amd64

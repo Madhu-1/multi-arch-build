@@ -22,14 +22,15 @@ build_push_images() {
     # build and push per arch images
     ifs=$IFS
     IFS=
-    digest=$(awk -v ARCH=$1 '{if (archfound) {print $NF; exit 0}}; {archfound=($0 ~ "arch.*"ARCH)}' <<<"${manifests}")
+    ACH=$1
+    digest=$(awk -v ARCH=${ACH} '{if (archfound) {print $NF; exit 0}}; {archfound=($0 ~ "arch.*"ARCH)}' <<<"${manifests}")
     IFS=$ifs
     echo $ifs
     echo $digest
     sed -i "s|\(^FROM.*\)${baseimg}.*$|\1${baseimg}@${digest}|" "${dockerfile}"
-    GOARCH=${ARCH} docker build -t multi-arch-test:$1 .
-    docker multi-arch-test:$1
+    docker build -t multi-arch-test:$ACH .
+    docker push multi-arch-test:${ACH}
 
 }
 
-build_push_images
+build_push_images $1

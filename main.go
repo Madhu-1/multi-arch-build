@@ -17,6 +17,7 @@ func printtext(s string) {
 
 func main() {
 	printtext("hello world\n")
+	printtext("hello world hello world\n")
 	fmt.Println("Go Version:", runtime.Version())
 	fmt.Println("Compiler:", runtime.Compiler)
 	fmt.Printf("Platform: %s/%s\n", runtime.GOOS, runtime.GOARCH)
