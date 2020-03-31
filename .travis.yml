@@ -9,5 +9,6 @@ services:
 jobs:
   include:
     - name: multi-arch-docker-build
+      arch: arm64
       script:
         - ./build.sh
