@@ -29,7 +29,9 @@ build_push_images() {
     echo $digest
     sed -i "s|\(^FROM.*\)${baseimg}.*$|\1${baseimg}@${digest}|" "${dockerfile}"
     docker build -t madhupr001/multi-arch-test:$ACH .
-    docker push madhupr001/multi-arch-test:${ACH}
+    if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
+        docker push madhupr001/multi-arch-test:${ACH}
+    fi
 
 }
 
